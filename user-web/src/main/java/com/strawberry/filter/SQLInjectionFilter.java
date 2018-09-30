@@ -6,6 +6,14 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
+/**
+ * 功能：防止SQL注入
+ *
+ * @author alan.wnag
+ * @version 1.0.0
+ * @since 2018.09.30
+ *
+ */
 @Order(value = 1)
 @WebFilter(urlPatterns = {"/*"}, filterName = "sqlInjectionFilter")
 public class SQLInjectionFilter implements Filter {

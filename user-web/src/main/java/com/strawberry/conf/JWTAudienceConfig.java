@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  *
  * @author alan.wnag
  * @version 1.0.0
- * @since 2018.09.29
+ * @since 2018.09.30
  */
 
 @Component

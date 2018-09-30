@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 功能：跨域访问
+ * 功能：设置跨域访问限制
  *
  * @author alan.wnag
  * @version 1.0.0
- * @since 2018.09.29
+ * @since 2018.09.30
  *
  */
 @Order(value = 1)
