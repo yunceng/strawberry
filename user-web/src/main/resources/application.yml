@@ -1,0 +1,31 @@
+#更改springboot端口号(默认是8080)
+server:
+  port: 80
+
+spring:
+  profiles:
+    active: dev
+
+---
+#development environment
+spring:
+  profiles: dev
+
+server:
+  port: 80
+
+---
+#test environment
+spring:
+  profiles: test
+
+server:
+  port: 8180
+
+---
+#production environment
+spring:
+  profiles: prod
+
+server:
+  port: 8190
