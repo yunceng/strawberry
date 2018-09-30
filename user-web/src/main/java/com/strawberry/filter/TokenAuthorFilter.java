@@ -1,10 +1,14 @@
 package com.strawberry.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.strawberry.util.TokenUtil;
+import com.strawberry.common.FilterConstants;
+import com.strawberry.conf.JWTAudienceConfig;
+import com.strawberry.util.JwtHelper;
 import com.strawberry.vo.ResultInfo;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
@@ -15,21 +19,24 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
 
 /**
- * 功能：根据token值防止重复提交
+ * 功能：根据token值进行拦截，如果没有token，则跳转到登录页面，否则不拦截
  *
  * @author alan.wnag
  * @version 1.0.0
  * @since 2018.09.29
+ *
  */
 //Order中的value越小，优先级越高。
-@Order(value = 1)
+@Order(value = 2)
 @WebFilter(urlPatterns = {"/ads/*"}, filterName = "tokenAuthorFilter")
 public class TokenAuthorFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(TokenAuthorFilter.class);
+
+    @Autowired
+    private JWTAudienceConfig jwtAudienceConfig;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -41,22 +48,14 @@ public class TokenAuthorFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse rep = (HttpServletResponse) response;
 
-        //设置允许跨域的配置
-        // 这里填写你允许进行跨域的主机ip（正式上线时可以动态配置具体允许的域名和IP）
-        rep.setHeader("Access-Control-Allow-Origin", "*");
-        // 允许的访问方法
-        rep.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
-        // Access-Control-Max-Age 用于 CORS 相关配置的缓存
-        rep.setHeader("Access-Control-Max-Age", "3600");
-        rep.setHeader("Access-Control-Allow-Headers", "token,Origin, X-Requested-With, Content-Type, Accept");
-
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
-        String token = req.getHeader(TokenUtil.REQUEST_HEADER_TOKEN_KEY);//header方式
+        String token = req.getHeader(FilterConstants.REQUEST_HEADER_TOKEN_KEY);//header方式
         ResultInfo resultInfo = new ResultInfo();
         boolean isFilter = false;
 
         String method = ((HttpServletRequest) request).getMethod();
+
         if (method.equals("OPTIONS")) {
             rep.setStatus(HttpServletResponse.SC_OK);
         } else {
@@ -64,8 +63,8 @@ public class TokenAuthorFilter implements Filter {
                 resultInfo.setCode(ResultInfo.CodeType.UN_AUTHORIZED);
                 resultInfo.setMsg("用户授权认证没有通过，客户端请求参数中无token信息");
             } else {
-                TokenUtil.submitTokenCheck(token, req);
-                if (true) {
+                Claims claims = JwtHelper.parseJWT(token, jwtAudienceConfig.getBase64Secret());
+                if (claims != null) {
                     resultInfo.setCode(ResultInfo.CodeType.SUCCESS);
                     resultInfo.setMsg("用户授权认证通过");
                     isFilter = true;
