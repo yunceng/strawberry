@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * 功能：设置跨域访问限制
  *
- * @author alan.wnag
+ * @author alan.wang
  * @version 1.0.0
  * @since 2018.09.30
  *

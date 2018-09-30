@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * 功能：根据token值进行拦截，如果没有token，则跳转到登录页面，否则不拦截
  *
- * @author alan.wnag
+ * @author alan.wang
  * @version 1.0.0
  * @since 2018.09.29
  *

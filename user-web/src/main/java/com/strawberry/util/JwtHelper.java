@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * 功能：构造jwt及解析jwt的帮助类
  *
- * @author alan.wnag
+ * @author alan.wang
  * @version 1.0.0
  * @since 2018.09.30
  */

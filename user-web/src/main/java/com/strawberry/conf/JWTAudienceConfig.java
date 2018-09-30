@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * 功能：根据jwt.properties文件生成JWT的配置类
  *
- * @author alan.wnag
+ * @author alan.wang
  * @version 1.0.0
  * @since 2018.09.30
  */

@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * 功能：防止SQL注入
  *
- * @author alan.wnag
+ * @author alan.wang
  * @version 1.0.0
  * @since 2018.09.30
  *
